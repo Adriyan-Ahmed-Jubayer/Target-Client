@@ -1,12 +1,15 @@
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthenticationProvider";
 
 const Navbar = () => {
+    const {User} = useContext(AuthContext)
     return (
         <>
-            <div className="navbar bg-base-100">
+            <div className="navbar py-6">
                 <div className="navbar-start">
                     <div className="dropdown">
-                        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+                        <div tabIndex={0} role="button" className="btn btn-ghost btn-square bg-gradient-to-l from-[#924AEF] to-[#A827E4] text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
                         </div>
                         <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
@@ -17,7 +20,7 @@ const Navbar = () => {
                     </div>
                 </div>
                 <div className="navbar-center">
-                    <a className="btn btn-ghost text-xl">daisyUI</a>
+                    <a className="btn text-4xl font-bold bg-gradient-to-l from-[#924AEF] to-[#A827E4] text-white">T</a>
                 </div>
                 <div className="navbar-end">
                     <button className="btn btn-ghost btn-circle">
@@ -29,6 +32,28 @@ const Navbar = () => {
                             <span className="badge badge-xs badge-primary indicator-item"></span>
                         </div>
                     </button>
+                    {
+                        User ? <>
+                                  <div className="dropdown dropdown-end">
+                        <div tabIndex={0} role="button" className="btn btn-ghost btn-square avatar">
+                            <div className="w-10 rounded-lg">
+                                <img alt="Tailwind CSS Navbar component" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                            </div>
+                        </div>
+                        <nav tabIndex={0} className="menu menu-sm  mt-3 z-[1] dropdown-content p-2 shadow bg-base-100 rounded-s w-52 space-y-3">
+                            <img className="w-10 rounded-lg mx-auto" src={User.photoURL} alt="" />
+                            <h1 className="text-center font-bold">{User.displayName}</h1>
+                            <button className="py-3 px-5 lg:py-3 lg:px-7 text-xs md:text-sm lg:text-base bg-gradient-to-l from-[#924AEF] to-[#A827E4] font-bold rounded-md hover:bg-white hover:scale-90 duration-300 text-white" to='/login w-full text-center'>
+                                LOGOUT
+                            </button>
+                        </nav>
+                    </div>
+                    </> : 
+                    <NavLink className="py-3 px-5 lg:py-4 lg:px-7 text-xs md:text-sm lg:text-base bg-gradient-to-l from-[#924AEF] to-[#A827E4] font-bold rounded-md hover:bg-white hover:scale-90 duration-300 text-white" to='/login'>
+                        LOGIN
+                    </NavLink>
+                    }
+                    
                 </div>
             </div>
         </>

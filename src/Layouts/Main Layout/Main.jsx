@@ -6,10 +6,10 @@ import Footer from '../../Shared/Footer/Footer';
 const Main = () => {
     return (
         <>
-            <header>
+            <header className=''>
                 <Navbar></Navbar>
             </header>
-            <main>
+            <main className='min-h-screen'>
                 <Outlet></Outlet>
             </main>
             <footer>

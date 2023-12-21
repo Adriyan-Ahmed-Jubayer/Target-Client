@@ -1,7 +1,11 @@
+import Banner from "./Components/Banner/Banner";
+
 const Home = () => {
     return (
         <>
-            -- Hello Mamur betara ............. !
+            <section>
+                <Banner></Banner>
+            </section>
         </>
     );
 };
