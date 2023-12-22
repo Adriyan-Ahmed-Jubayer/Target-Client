@@ -1,0 +1,17 @@
+.scrollbar-to-do {
+    scrollbar-width: thin; 
+    scrollbar-color: #A827E4 #924AEF; 
+  }
+  
+  .scrollbar-to-do::-webkit-scrollbar {
+    width: 5px; 
+  }
+  
+  .scrollbar-to-do::-webkit-scrollbar-thumb {
+    background-color: #A827E4;
+    border-radius: 10px; 
+  }
+  
+  .scrollbar-to-do::-webkit-scrollbar-track {
+    background-color: transparent 
+  }

@@ -6,14 +6,11 @@ import { AuthContext } from "../../Context/AuthenticationProvider";
 const Login = () => {
     const {LoginAccount, GoogleLogin} = useContext(AuthContext);
 
-    const Location = useLocation();
-
-    const navigation = useNavigate();
+    const track = useNavigate();
 
     const navigate = () => {
-        console.log(Location.state);
-         navigation(Location?.state ? Location.state : "/" )
-    }
+        track('/dashboard');
+}
 
 
     const handleLogin = e => {

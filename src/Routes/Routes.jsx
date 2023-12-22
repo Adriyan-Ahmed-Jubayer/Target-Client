@@ -3,6 +3,8 @@ import Main from "../Layouts/Main Layout/Main";
 import Home from "../Pages/Home/Home";
 import Register from "../Pages/Authentication/Registier";
 import Login from "../Pages/Authentication/Login";
+import Dashboard from "../Layouts/Dashboard Layout/Dashboard";
+import Tasks from "../Pages/Tasks/Tasks";
 
 const Routes = createBrowserRouter([
     {
@@ -23,6 +25,16 @@ const Routes = createBrowserRouter([
         },
       ]
     },
+    {
+        path: "/dashboard",
+        element: <Dashboard></Dashboard>,
+        children: [
+            {
+                path: '/dashboard',
+                element: <Tasks></Tasks>,
+            }
+        ]
+    }
   ]);
 
   export default Routes;

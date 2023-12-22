@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BsGoogle } from "react-icons/bs"
 import { useContext } from "react";
 import { toast } from "react-toastify";
@@ -8,6 +8,11 @@ const Register = () => {
 
     const { CreateAccount, updatingProfile, GoogleLogin } = useContext(AuthContext);
 
+    const track = useNavigate();
+
+    const navigate = () => {
+            track('/dashboard');
+    }
 
     const handleRegister = e => {
         e.preventDefault()
@@ -22,11 +27,13 @@ const Register = () => {
                     updatingProfile(res, name, photo)
                     toast.success('Congratulations ! Registration completed Successfully ! 🤩💕')
                     form.reset();
+                    navigate();
                 }
             })
             .catch(err => {
                 if (err.message == "Firebase: Error (auth/email-already-in-use).") {
                     toast.error("The Email already in use")
+                    navigate()
                 }
                 else {
                     toast.error(err.message);

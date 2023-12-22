@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthenticationProvider";
+import { IoHomeOutline } from "react-icons/io5";
+import { VscDashboard } from "react-icons/vsc";
 
 const Navbar = () => {
-    const {User} = useContext(AuthContext)
+    const { User, LogOutAccount } = useContext(AuthContext)
     return (
         <>
             <div className="navbar py-6">
@@ -12,10 +14,16 @@ const Navbar = () => {
                         <div tabIndex={0} role="button" className="btn btn-ghost btn-square bg-gradient-to-l from-[#924AEF] to-[#A827E4] text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
                         </div>
-                        <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                        <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-lg w-52 space-y-2">
                             <li>
-                                <NavLink className="" to='/' >HOME</NavLink>
+                                <NavLink className={({ isActive }) => isActive ? `bg-[#F6EEFF]  py-2 md:py-2.5 px-3 md:px-5 lg:px-5 font-bold text-xs md:text-sm  rounded  text-[#924AEF] flex items-center gap-4` : `bg-transparent py-2 md:py-2 md:px-2 font-bold text-xs md:text-sm  rounded flex items-center gap-4 px-5`} to='/' ><IoHomeOutline className="text-xl" />HOME</NavLink>
                             </li>
+                            {
+                                User ? <li>
+                                <NavLink className={({ isActive }) => isActive ? `bg-[#F6EEFF]  py-2 md:py-2.5 px-3 md:px-5 lg:px-5 font-bold text-xs md:text-sm  rounded  text-[#924AEF] flex items-center gap-4` : `bg-transparentS py-2 px-5 font-bold text-xs md:text-sm rounded flex items-center gap-4`} to='/dashboard' ><VscDashboard className="text-xl" />Dashboard</NavLink>
+                            </li> :
+                            <></>
+                            }
                         </ul>
                     </div>
                 </div>
@@ -43,7 +51,7 @@ const Navbar = () => {
                         <nav tabIndex={0} className="menu menu-sm  mt-3 z-[1] dropdown-content p-2 shadow bg-base-100 rounded-s w-52 space-y-3">
                             <img className="w-10 rounded-lg mx-auto" src={User.photoURL} alt="" />
                             <h1 className="text-center font-bold">{User.displayName}</h1>
-                            <button className="py-3 px-5 lg:py-3 lg:px-7 text-xs md:text-sm lg:text-base bg-gradient-to-l from-[#924AEF] to-[#A827E4] font-bold rounded-md hover:bg-white hover:scale-90 duration-300 text-white" to='/login w-full text-center'>
+                            <button onClick={LogOutAccount} className="py-3 px-5 lg:py-3 lg:px-7 text-xs md:text-sm lg:text-base bg-gradient-to-l from-[#924AEF] to-[#A827E4] font-bold rounded-md hover:bg-white hover:scale-90 duration-300 text-white" to='/login w-full text-center'>
                                 LOGOUT
                             </button>
                         </nav>
