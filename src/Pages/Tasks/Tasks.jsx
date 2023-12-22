@@ -4,6 +4,12 @@ import { AuthContext } from '../../Context/AuthenticationProvider';
 import { LuListTodo } from "react-icons/lu";
 import { VscRefresh } from "react-icons/vsc";
 import { GrCompliance } from "react-icons/gr";
+import { MdOutlineSubtitles } from "react-icons/md";
+import { MdOutlineDateRange } from "react-icons/md";
+import { FaHourglassStart } from "react-icons/fa";
+import { TbFileDescription } from "react-icons/tb"
+import { MdOutlineLowPriority } from "react-icons/md";
+import { toast } from 'react-toastify';
 
 
 const currentDate = new Date();
@@ -26,12 +32,16 @@ const Tasks = () => {
 
     const [usersData, setUserData] = useState([])
 
-    useEffect(() => {
+    const bringData = () => {
         if (User) {
             fetch(`http://localhost:5000/tasks?email=${User?.email}`)
                 .then(res => res.json())
-                .then(data => console.log(data))
+                .then(data => setUserData(data))
         }
+    }
+
+    useEffect(() => {
+       bringData()
     }, [User])
 
 
@@ -39,8 +49,25 @@ const Tasks = () => {
 
     const { register, handleSubmit, formState: { errors }, control } = useForm();
     const onSubmit = (data) => {
-        const status = 'to-do'
+        const status = 'To-Do'
         const NewTask = { ...data, status, email }
+        fetch(`http://localhost:5000/tasks`, {
+            method: "POST",
+            headers: {
+                'content-type' : 'application/json'
+            },
+            body: JSON.stringify(NewTask)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.insertedId){
+                toast.success('Congratulations ! Your Task Added Successfully.')
+                ModalClose()
+                bringData()
+            } else {
+                toast.error('Something is wrong')
+            }
+        })
     };
 
     const ModalClose = () => {
@@ -62,30 +89,54 @@ const Tasks = () => {
                     <div className='py-4 text-center bg-[#924AEF] rounded-t-xl '>
                         <h2 className='flex items-center gap-3 font-bold justify-center text-white'><LuListTodo className='text-5xl text-white bg-[#E328AF] p-3 rounded-lg' />TO-DO</h2>
                     </div>
-                    <div className='p-4 border-2 border-[#924AEF] rounded-b-xl h-96 overflow-y-auto scrollbar-to-do'>
-                        <div className='bg-red-500 h-44'></div>
-                        <div className='bg-blue-500 h-44'></div>
-                        <div className='bg-green-500 h-44'></div>
+                    <div className='p-4 border-2 border-[#924AEF] rounded-b-xl h-96 overflow-y-auto scrollbar-to-do space-y-4'>
+                        {
+                            usersData.map(data => data.status === 'To-Do' ? <div key={data._id} className='p-3 border-2 border-[#924AEF] rounded-md'>
+                                <h1 className='text-lg flex items-center gap-3 font-semibold'><MdOutlineSubtitles className='text-xl' />{data.title}</h1>
+                                <div className='flex items-center justify-between'>
+                                    <p className='flex items-center gap-3 font-semibold'><MdOutlineDateRange />{data.deadline}</p>
+                                    <p className='flex items-center gap-3 font-semibold'>{data?.startDate ? <FaHourglassStart /> : <></>}{data?.startDate}</p>
+                                </div>
+                                <p className='flex items-center gap-3 font-semibold'>{data?.priority ? <MdOutlineLowPriority /> : <></>} Priority : {data?.priority}</p>
+                                <p className='flex items-start gap-3 font-medium'>{data?.description ? <TbFileDescription className='text-3xl' /> : <></>}{data?.description}</p>
+                            </div> : <></>)
+                        }
                     </div>
                 </div>
                 <div className=" rounded-xl">
                     <div className='py-4 text-center bg-[#5ECFFF] rounded-t-xl '>
                         <h2 className='flex items-center gap-3 font-bold justify-center text-white'><VscRefresh className='text-5xl text-white bg-[#924AEF] p-3 rounded-lg' />ON GOING</h2>
                     </div>
-                    <div className='p-4 border-2 border-[#924AEF] rounded-b-xl h-96 overflow-y-auto scrollbar-to-do'>
-                        <div className='bg-red-500 h-44'></div>
-                        <div className='bg-blue-500 h-44'></div>
-                        <div className='bg-green-500 h-44'></div>
+                    <div className='p-4 border-2 border-[#924AEF] rounded-b-xl h-96 overflow-y-auto scrollbar-to-do space-y-4'>
+                        {
+                            usersData.map(data => data.status === 'Ongoing' ? <div key={data._id} className='p-3 border-2 border-[#924AEF] rounded-md'>
+                                <h1 className='text-lg flex items-center gap-3 font-semibold'><MdOutlineSubtitles className='text-xl' />{data.title}</h1>
+                                <div className='flex items-center justify-between'>
+                                    <p className='flex items-center gap-3 font-semibold'><MdOutlineDateRange />{data.deadline}</p>
+                                    <p className='flex items-center gap-3 font-semibold'>{data?.startDate ? <FaHourglassStart /> : <></>}{data?.startDate}</p>
+                                </div>
+                                <p className='flex items-center gap-3 font-semibold'>{data?.priority ? <MdOutlineLowPriority /> : <></>} Priority : {data?.priority}</p>
+                                <p className='flex items-start gap-3 font-medium'>{data?.description ? <TbFileDescription className='text-3xl' /> : <></>}{data?.description}</p>
+                            </div> : <></>)
+                        }
                     </div>
                 </div>
                 <div className=" rounded-xl">
                     <div className='py-4 text-center bg-[#E328AF] rounded-t-xl '>
-                        <h2 className='flex items-center gap-3 font-bold justify-center text-white'><LuListTodo className='text-5xl text-white bg-[#5ECFFF] p-3 rounded-lg' />COMPLETED</h2>
+                        <h2 className='flex items-center gap-3 font-bold justify-center text-white'><GrCompliance className='text-5xl text-white bg-[#5ECFFF] p-3 rounded-lg' />COMPLETED</h2>
                     </div>
-                    <div className='p-4 border-2 border-[#924AEF] rounded-b-xl h-96 overflow-y-auto scrollbar-to-do'>
-                        <div className='bg-red-500 h-44'></div>
-                        <div className='bg-blue-500 h-44'></div>
-                        <div className='bg-green-500 h-44'></div>
+                    <div className='p-4 border-2 border-[#924AEF] rounded-b-xl h-96 overflow-y-auto scrollbar-to-do space-y-4'>
+                        {
+                            usersData.map(data => data.status === 'Completed' ? <div key={data._id} className='p-3 border-2 border-[#924AEF] rounded-md'>
+                                <h1 className='text-lg flex items-center gap-3 font-semibold'><MdOutlineSubtitles className='text-xl' />{data.title}</h1>
+                                <div className='flex items-center justify-between'>
+                                    <p className='flex items-center gap-3 font-semibold'><MdOutlineDateRange />{data.deadline}</p>
+                                    <p className='flex items-center gap-3 font-semibold'>{data?.startDate ? <FaHourglassStart /> : <></>}{data?.startDate}</p>
+                                </div>
+                                <p className='flex items-center gap-3 font-semibold'>{data?.priority ? <MdOutlineLowPriority /> : <></>} Priority : {data?.priority}</p>
+                                <p className='flex items-start gap-3 font-medium'>{data?.description ? <TbFileDescription className='text-3xl' /> : <></>}{data?.description}</p>
+                            </div> : <></>)
+                        }
                     </div>
                 </div>
             </div>

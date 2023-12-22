@@ -5,6 +5,7 @@ import Register from "../Pages/Authentication/Registier";
 import Login from "../Pages/Authentication/Login";
 import Dashboard from "../Layouts/Dashboard Layout/Dashboard";
 import Tasks from "../Pages/Tasks/Tasks";
+import Protection from "../Protection/Protection";
 
 const Routes = createBrowserRouter([
     {
@@ -27,11 +28,11 @@ const Routes = createBrowserRouter([
     },
     {
         path: "/dashboard",
-        element: <Dashboard></Dashboard>,
+        element: <Protection><Dashboard></Dashboard></Protection>,
         children: [
             {
                 path: '/dashboard',
-                element: <Tasks></Tasks>,
+                element: <Protection><Tasks></Tasks></Protection>,
             }
         ]
     }
